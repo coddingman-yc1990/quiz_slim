@@ -11,9 +11,7 @@ def parse_args(check=True):
     # train
     parser.add_argument('--dataset_name', type=str, default='quiz')
     parser.add_argument('--dataset_dir', type=str)
-    parser.add_argument('--checkpoint_path', type=str)
     parser.add_argument('--model_name', type=str, default='inception_v4')
-    parser.add_argument('--checkpoint_exclude_scopes', type=str, default='InceptionV4/Logits,InceptionV4/AuxLogits/Aux_logits')
     parser.add_argument('--train_dir', type=str)
     parser.add_argument('--learning_rate', type=float, default=0.001)
     parser.add_argument('--optimizer', type=str, default='rmsprop')
@@ -28,8 +26,8 @@ def parse_args(check=True):
     return FLAGS, unparsed
 
 
-train_cmd = 'python3 ./train_image_classifier.py  --dataset_name={dataset_name} --dataset_dir={dataset_dir} --checkpoint_path={checkpoint_path} --model_name={model_name} --checkpoint_exclude_scopes={checkpoint_exclude_scopes} --train_dir={train_dir} --learning_rate={learning_rate} --optimizer={optimizer} --batch_size={batch_size} --max_number_of_steps={max_number_of_steps}'
-eval_cmd = 'python3 ./eval_image_classifier.py --dataset_name={dataset_name} --dataset_dir={dataset_dir} --dataset_split_name={dataset_split_name} --model_name={model_name}   --checkpoint_path={checkpoint_path}  --eval_dir={eval_dir} --batch_size={batch_size}  --max_num_batches={max_num_batches}'
+train_cmd = 'python3 ./train_image_classifier.py  --dataset_name={dataset_name} --dataset_dir={dataset_dir}  --model_name={model_name}  --train_dir={train_dir} --learning_rate={learning_rate} --optimizer={optimizer} --batch_size={batch_size} --max_number_of_steps={max_number_of_steps}'
+eval_cmd = 'python3 ./eval_image_classifier.py --dataset_name={dataset_name} --dataset_dir={dataset_dir} --dataset_split_name={dataset_split_name} --model_name={model_name}     --eval_dir={eval_dir} --batch_size={batch_size}  --max_num_batches={max_num_batches}'
 
 if __name__ == '__main__':
     FLAGS, unparsed = parse_args()
@@ -44,8 +42,8 @@ if __name__ == '__main__':
         # train 1 epoch
         print('################    train    ################')
         p = os.popen(train_cmd.format(**{'dataset_name': FLAGS.dataset_name, 'dataset_dir': FLAGS.dataset_dir,
-                                         'checkpoint_path': FLAGS.checkpoint_path, 'model_name': FLAGS. model_name,
-                                         'checkpoint_exclude_scopes': FLAGS.checkpoint_exclude_scopes, 'train_dir': FLAGS. train_dir,
+                                          'model_name': FLAGS. model_name,
+                                          'train_dir': FLAGS. train_dir,
                                          'learning_rate': FLAGS.learning_rate, 'optimizer': FLAGS.optimizer,
                                          'batch_size': FLAGS.batch_size, 'max_number_of_steps': steps}))
         for l in p:
@@ -55,7 +53,7 @@ if __name__ == '__main__':
         print('################    eval    ################')
         p = os.popen(eval_cmd.format(**{'dataset_name': FLAGS.dataset_name, 'dataset_dir': FLAGS.dataset_dir,
                                         'dataset_split_name': 'validation', 'model_name': FLAGS. model_name,
-                                        'checkpoint_path': FLAGS.train_dir, 'batch_size': FLAGS.batch_size,
+                                         'batch_size': FLAGS.batch_size,
                                         'eval_dir': FLAGS. eval_dir, 'max_num_batches': FLAGS. max_num_batches}))
         for l in p:
             print(p.strip())
