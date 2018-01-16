@@ -125,7 +125,7 @@ def densenet(images, num_classes=1001, is_training=False,
             bias_initializer=tf.constant_initializer(0,1)
 
             scope = 'pre_logits'
-            pre_logit=slim.conv2d(net,num_classes,[1,1],bias_initializer=bias_initializer,scope=scope)
+            pre_logit=slim.conv2d(net,num_classes,[1,1],biases_initializer=bias_initializer,scope=scope)
             end_points[scope] = net
 
             scope='logis'
