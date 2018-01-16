@@ -60,10 +60,7 @@ def densenet(images, num_classes=1001, is_training=False,
     with tf.variable_scope(scope, 'DenseNet', [images, num_classes]):
         with slim.arg_scope(bn_drp_scope(is_training=is_training,
                                          keep_prob=dropout_keep_prob)) as ssc:
-            pass
-            ##########################
-            # Put your code here.
-            ##########################
+
             net=slim.conv2d(images,2*growth,[7,7],stride=2,scope=scope)
             end_points[scope] = net
 
@@ -119,7 +116,7 @@ def densenet(images, num_classes=1001, is_training=False,
 
             scope='last_BN_relu'
             net=slim.batch_norm(net,scope=scope)
-            net.th.nn.relu(net)
+            net=tf.nn.relu(net)
 
             scope = 'global_average'
             net = slim.avg_pool2d(net, net.shape[1:3],scope=scope)
